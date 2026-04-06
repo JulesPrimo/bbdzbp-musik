@@ -35,7 +35,8 @@ const getNote = (note) => {
   return notes.find(({ name }) => name === note)
 }
 
-const tempo = 120;
+let tempo = 120;
+const setTempo = bpm => { tempo = bpm; };
 
 const getChordDuration = chord => {
   const seconds = 60 / tempo;
@@ -160,14 +161,46 @@ const setPartition = newPartition => {
 let song = null;
 let audioContext = null;
 let started = false;
+let songStartTime = null;
+let currentChords = null;
+let currentTotalDuration = 0;
+
+const getCurrentChord = () => {
+  if (!started || !audioContext || songStartTime === null || !currentChords) return null;
+  const elapsed = (audioContext.currentTime - songStartTime) % currentTotalDuration;
+  let t = 0;
+  for (const chord of currentChords) {
+    t += chord.duration;
+    if (elapsed < t) return chord;
+  }
+  return null;
+};
+
+const getCurrentChordIndex = () => {
+  if (!started || !audioContext || songStartTime === null || !currentChords) return -1;
+  const elapsed = (audioContext.currentTime - songStartTime) % currentTotalDuration;
+  let t = 0;
+  for (let i = 0; i < currentChords.length; i++) {
+    t += currentChords[i].duration;
+    if (elapsed < t) return i;
+  }
+  return -1;
+};
+
+const isStarted = () => started;
 
 const start = async () => {
   audioContext = audioContext || new AudioContext();
+
+  currentChords = parsePartition(getPartition());
+  currentTotalDuration = totalDuration(currentChords);
+
   song = song || await play(getPartition());
 
   if (!started) {
     audioContext.resume();
     started = true;
+    songStartTime = audioContext.currentTime;
     song.start();
 
     return;

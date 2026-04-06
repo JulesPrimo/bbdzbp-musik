@@ -1,21 +1,23 @@
 <html>
 <head>
-  <title>Home</title>
+  <title>bbdzbp musik</title>
   <script src="./bbdzbpmsc.js"></script>
+  <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-  <textarea id="partition" style="width: 100%;"></textarea>
-  <hr />
-  <button onclick="start();">start</button>
-  <button onclick="pause();">pause</button>
-  <button onclick="resume();">resume</button>
-  <button onclick="stop();">stop</button>
+  <h1>bbdzbp musik</h1>
+  <textarea id="partition"></textarea>
+  <pre id="partition-display"></pre>
+  <div class="tempo">
+    <input type="range" id="tempo" min="40" max="300" value="120">
+    <span id="tempo-label">120 BPM</span>
+  </div>
+  <div class="controls">
+    <button onclick="start();">start</button>
+    <button onclick="pause();">pause</button>
+    <button onclick="resume();">resume</button>
+    <button onclick="stop();">stop</button>
+  </div>
 </body>
-<script>
-  const partitionInput = document.getElementById('partition');
-  partitionInput.value = getPartition();
-  partitionInput.onchange = function() {
-    setPartition(partitionInput.value);
-  }
-</script>
+<script src="./index.js"></script>
 </html>

@@ -1,0 +1,136 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0f0f13;
+  color: #e0dfe8;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  gap: 24px;
+}
+
+h1 {
+  font-size: 1.1rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #7c6af7;
+  opacity: 0.85;
+}
+
+#partition {
+  width: 100%;
+  max-width: 720px;
+  height: 260px;
+  background: #16151e;
+  color: #c8f7a0;
+  border: 1px solid #2e2b45;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#partition:focus {
+  border-color: #7c6af7;
+}
+
+#partition-display {
+  width: 100%;
+  max-width: 720px;
+  height: 260px;
+  background: #16151e;
+  color: #c8f7a0;
+  border: 1px solid #2e2b45;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-y: auto;
+  display: none;
+}
+
+#partition-display mark {
+  background: rgba(124, 106, 247, 0.25);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 3px;
+  padding: 0 2px;
+  text-shadow: 0 0 8px rgba(124, 106, 247, 0.6);
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.tempo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tempo input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 3px;
+  background: #2e2b45;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.tempo input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7c6af7;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.tempo input[type="range"]::-webkit-slider-thumb:hover {
+  background: #fff;
+}
+
+#tempo-label {
+  font-size: 0.8rem;
+  color: #7c6af7;
+  min-width: 60px;
+}
+
+button {
+  background: #1e1c2a;
+  color: #e0dfe8;
+  border: 1px solid #2e2b45;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+button:hover {
+  background: #2a2740;
+  border-color: #7c6af7;
+  color: #fff;
+}
+
+button:active {
+  background: #7c6af7;
+  color: #fff;
+}
