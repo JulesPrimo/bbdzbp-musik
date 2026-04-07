@@ -23,7 +23,7 @@ const getNote = (note) => {
     if (noteName === "E") { note = "F"; }
   }
 
-  return { name: note, frequency: NOTE_TABLE[note] };
+  return { name: note, frequency: NOTE_TABLE[note] ?? 0 };
 }
 
 let tempo = 120;
