@@ -94,7 +94,7 @@ c*2,e/2,g/2,a,g/2,e/2,c*2
 # Accords
 (c,e,g)*2,(f,a,c5)*2,(g,b,d5)*2,(c,e,g)*4
 
-# Slides blues (pentatonique La mineur)
+# Slides (pentatonique La mineur)
 a3->c*2,c->e,e->g/2,g->a/2,a*2,-/2,a->g*2,g->e
 ```
 
