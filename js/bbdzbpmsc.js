@@ -149,8 +149,7 @@ const createOscillatorForFrequency = (context, frequency, startTime, endTime, ga
   return oscillator;
 }
 
-//demo partition
-let partition = "f3/2,a3/2,b3,f3/2,a3/2,b3,f3/2,a3/2,b3/2,e/2,d,b3/2,c/2,b3/2,g3/2,e3*2,-/2,d3/2,e3/2,g3/2,e3*3,f3/2,a3/2,b3,f3/2,a3/2,b3,f3/2,a3/2,b3/2,e/2,d,b3/2,c/2,e/2,b3/2,g3*2,-/2,b3/2,g3/2,d3/2,e3*3,d3/2,e3/2,f3,g3/2,a3/2,b3,c/2,b3/2,e3*3,(d3,f3)/2,(e3,g3)/2,(f3,a3),(g3,b3)/2,(a3,c)/2,(b3,d),(c,e)/2,(d,f)/2,(e,g)*3,d3/2,e3/2,f3,g3/2,a3/2,b3,c/2,b3/2,e3*3,(d3,f3)/2,(c3,e3)/2,(e3,g3)/2,(d3,f3)/2,(g3,b3)/2,(f3,a3)/2,(a3,c)/2,(g3,b3)/2,(c,e)/2,(b3,d)/2,(e,g)/2,(d,f)/2,(g,b)/2,(f,a)/2,a/4,b/4,-/4,g/4,(a,e3)*8"
+let partition = "";
 
 const getPartition = () => partition;
 
@@ -188,6 +187,18 @@ const getCurrentChordIndex = () => {
 };
 
 const isStarted = () => started;
+
+const getChordPhase = () => {
+  if (!started || !audioContext || songStartTime === null || !currentChords) return 0;
+  const elapsed = (audioContext.currentTime - songStartTime) % currentTotalDuration;
+  let t = 0;
+  for (const chord of currentChords) {
+    const end = t + chord.duration;
+    if (elapsed < end) return (elapsed - t) / chord.duration;
+    t = end;
+  }
+  return 0;
+};
 
 const start = async () => {
   audioContext = audioContext || new AudioContext();

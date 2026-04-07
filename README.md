@@ -96,14 +96,26 @@ c*2,e/2,g/2,a,g/2,e/2,c*2
 a3->c*2,c->e,e->g/2,g->a/2,a*2,-/2,a->g*2,g->e
 ```
 
+## Interface
+
+- **Sélecteur de partition** — choisir parmi les partitions préchargées (définies dans `partitions.js`)
+- **Textarea** — éditer la partition librement ; cliquer dessus pendant la lecture arrête la musique
+- **Tempo** — slider de 40 à 300 BPM, appliqué immédiatement
+- **Boutons** — start / pause / resume / stop
+- **Télécharger** — exporte la partition en `.txt`
+- **Point de beat** — cercle qui pulse au rythme de chaque note
+
 ## Architecture
 
-| Fichier          | Rôle |
-|------------------|------|
-| `bbdzbpmsc.js`   | Moteur audio : parsing, synthèse via Web Audio API, contrôle lecture |
-| `index.js`       | UI : sync textarea ↔ partition, highlight de la note courante |
-| `index.css`      | Styles |
-| `index.html`     | Structure HTML |
+| Fichier                | Rôle |
+|------------------------|------|
+| `js/bbdzbpmsc.js`      | Moteur audio : parsing, synthèse via Web Audio API, contrôle lecture |
+| `js/partitions.js`     | Partitions préchargées (objet `{ nom: string }`) |
+| `js/index.js`          | UI : chargement des partitions, sync textarea, highlight, beat dot |
+| `css/index.css`        | Styles de l'interface principale |
+| `css/manuel.css`       | Styles du manuel |
+| `index.html`           | Structure HTML principale |
+| `manuel.html`          | Documentation de la syntaxe |
 
 ### Fonctionnement interne
 
@@ -111,3 +123,4 @@ a3->c*2,c->e,e->g/2,g->a/2,a*2,-/2,a->g*2,g->e
 2. **Rendu offline** — `play()` utilise un `OfflineAudioContext` pour pré-rendre toute la partition en un buffer audio.
 3. **Lecture** — Le buffer est joué en boucle via un `AudioBufferSourceNode` branché sur l'`AudioContext` live.
 4. **Highlight** — `getCurrentChordIndex()` calcule l'index du chord courant via `(audioContext.currentTime - songStartTime) % totalDuration`, utilisé par `index.js` pour surligner la note dans la partition affichée.
+5. **Beat dot** — `getChordPhase()` retourne la progression 0→1 dans la note courante, utilisée pour animer le cercle en `rAF`.

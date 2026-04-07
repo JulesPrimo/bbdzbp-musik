@@ -1,13 +1,18 @@
 <html>
 <head>
   <title>bbdzbp musik</title>
-  <script src="./bbdzbpmsc.js"></script>
-  <link rel="stylesheet" href="./index.css">
+  <script src="./js/partitions.js"></script>
+  <script src="./js/bbdzbpmsc.js"></script>
+  <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
-  <h1>bbdzbp musik</h1>
+  <div class="header">
+    <select id="partition-select"></select>
+    <h1>bbdzbp musik</h1>
+    <a href="./manuel.html">?</a>
+  </div>
   <textarea id="partition"></textarea>
-  <pre id="partition-display"></pre>
+  <pre id="partition-display" onclick="stop();"></pre>
   <div class="tempo">
     <input type="range" id="tempo" min="40" max="300" value="120">
     <span id="tempo-label">120 BPM</span>
@@ -17,7 +22,9 @@
     <button onclick="pause();">pause</button>
     <button onclick="resume();">resume</button>
     <button onclick="stop();">stop</button>
+    <button onclick="downloadPartition();">télécharger</button>
   </div>
+  <div id="beat-dot"></div>
 </body>
-<script src="./index.js"></script>
+<script src="./js/index.js"></script>
 </html>

@@ -1,0 +1,96 @@
+<html>
+<head>
+  <title>manuel — bbdzbp musik</title>
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="./css/manuel.css">
+</head>
+<body>
+  <h1>manuel</h1>
+  <div class="content">
+
+    <div class="block">
+      <h2>Note simple</h2>
+      <p>Une note est une lettre (<code>a</code>–<code>g</code>) suivie optionnellement d'un numéro d'octave. L'octave par défaut est 4 (do central = <code>c</code> = 261 Hz).</p>
+      <br>
+      <div class="code-block">c      →  C4  (261 Hz)
+c3     →  C3  (130 Hz)
+c5     →  C5  (523 Hz)</div>
+    </div>
+
+    <div class="block">
+      <h2>Altérations</h2>
+      <div class="code-block">c#     →  do dièse
+eb     →  mi bémol</div>
+    </div>
+
+    <div class="block">
+      <h2>Durées</h2>
+      <p>Le tempo par défaut est 120 BPM et se règle via le slider (40–300 BPM). À 120 BPM, 1 temps = 0.5 s.</p>
+      <br>
+      <table>
+        <tr><th>syntaxe</th><th>durée</th></tr>
+        <tr><td>a</td><td>1 temps (défaut)</td></tr>
+        <tr><td>a/2</td><td>1/2 temps</td></tr>
+        <tr><td>a/4</td><td>1/4 de temps</td></tr>
+        <tr><td>a*2</td><td>2 temps</td></tr>
+        <tr><td>a*4</td><td>4 temps</td></tr>
+      </table>
+    </div>
+
+    <div class="block">
+      <h2>Silence</h2>
+      <div class="code-block">-      →  silence 1 temps
+-/2    →  silence 1/2 temps</div>
+    </div>
+
+    <div class="block">
+      <h2>Accords</h2>
+      <p>Plusieurs notes entre parenthèses, séparées par des virgules :</p>
+      <br>
+      <div class="code-block">(c,e,g)       →  accord do majeur
+(c,e,g)*2     →  accord do majeur, tenu 2 temps
+(d3,f3)/2     →  accord sur 1/2 temps</div>
+    </div>
+
+    <div class="block">
+      <h2>Slides</h2>
+      <p><code>-></code> pour glisser d'une note à une autre sur la durée de l'événement :</p>
+      <br>
+      <div class="code-block">a3->c          →  glisse de A3 à C4 en 1 temps
+a3->c*2        →  glisse de A3 à C4 en 2 temps
+e->g/2         →  glisse rapide de E à G</div>
+      <br>
+      <p>Les slides fonctionnent aussi sur les accords (chaque voix glisse indépendamment) :</p>
+      <br>
+      <div class="code-block">(c,e)->(e,g)   →  glisse do→mi et mi→sol simultanément</div>
+    </div>
+
+    <div class="block">
+      <h2>Mise en forme</h2>
+      <p>Les espaces et sauts de ligne sont ignorés — la partition peut être formatée librement :</p>
+      <br>
+      <div class="code-block">a3->c*2, c->e,
+e->g/2,  g->a/2,
+a*2,     -/2</div>
+    </div>
+
+    <div class="block">
+      <h2>Exemples</h2>
+      <h3>Mélodie simple</h3>
+      <div class="code-block">c,d,e,f,g,a,b,c5</div>
+      <br>
+      <h3>Durées variées</h3>
+      <div class="code-block">c*2,e/2,g/2,a,g/2,e/2,c*2</div>
+      <br>
+      <h3>Accords</h3>
+      <div class="code-block">(c,e,g)*2,(f,a,c5)*2,(g,b,d5)*2,(c,e,g)*4</div>
+      <br>
+      <h3>Slides blues</h3>
+      <div class="code-block">a3->c*2,c->e,e->g/2,g->a/2,a*2,-/2,a->g*2,g->e</div>
+    </div>
+
+    <p><a href="./index.html">← retour</a></p>
+
+  </div>
+</body>
+</html>
