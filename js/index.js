@@ -81,16 +81,23 @@ const tick = () => {
     if (idx !== lastChordIndex) {
       lastChordIndex = idx;
       rebuildDisplay(idx);
+      const hue = Math.random() * 360;
+      const color = `hsl(${hue}, 90%, 70%)`;
+      beatDot.style.background = color;
+      beatDot.style.boxShadow = `0 0 10px ${color}`;
+      beatDot.style.left = `${Math.random() * (window.innerWidth  - 14)}px`;
+      beatDot.style.top  = `${Math.random() * (window.innerHeight - 14)}px`;
     }
 
+    const chord = getCurrentChord();
+    const isRest = chord?.name.replace(/[*/].*$/, '') === '-';
     const phase = getChordPhase();
-    const scale = 1 + 1.2 * Math.pow(1 - phase, 4);
-    const opacity = 0.3 + 0.7 * Math.pow(1 - phase, 4);
-    beatDot.style.transform = `scale(${scale})`;
-    beatDot.style.opacity = opacity;
+    const pulse = isRest ? 0 : Math.pow(1 - phase, 2);
+    beatDot.style.transform = `scale(${pulse * 3})`;
+    beatDot.style.opacity = pulse;
   } else {
-    beatDot.style.transform = 'scale(1)';
-    beatDot.style.opacity = 0.3;
+    beatDot.style.transform = 'scale(0)';
+    beatDot.style.opacity = 0;
   }
 
   requestAnimationFrame(tick);

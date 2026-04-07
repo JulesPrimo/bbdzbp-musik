@@ -98,19 +98,19 @@ a3->c*2,c->e,e->g/2,g->a/2,a*2,-/2,a->g*2,g->e
 
 ## Interface
 
-- **Sélecteur de partition** — choisir parmi les partitions préchargées (définies dans `partitions.js`)
+- **Sélecteur de partition** — choisir parmi les partitions préchargées (définies dans `js/partitions.js`) ; le tempo se règle automatiquement
 - **Textarea** — éditer la partition librement ; cliquer dessus pendant la lecture arrête la musique
-- **Tempo** — slider de 40 à 300 BPM, appliqué immédiatement
+- **Tempo** — slider de 40 à 300 BPM, appliqué avec un délai de 500 ms pour éviter les recalculs intempestifs
 - **Boutons** — start / pause / resume / stop
 - **Télécharger** — exporte la partition en `.txt`
-- **Point de beat** — cercle qui pulse au rythme de chaque note
+- **Point de beat** — cercle qui pulse, change de couleur et de position aléatoirement à chaque note
 
 ## Architecture
 
 | Fichier                | Rôle |
 |------------------------|------|
 | `js/bbdzbpmsc.js`      | Moteur audio : parsing, synthèse via Web Audio API, contrôle lecture |
-| `js/partitions.js`     | Partitions préchargées (objet `{ nom: string }`) |
+| `js/partitions.js`     | Partitions préchargées (objet `{ nom: { tempo, notes } }`) |
 | `js/index.js`          | UI : chargement des partitions, sync textarea, highlight, beat dot |
 | `css/index.css`        | Styles de l'interface principale |
 | `css/manuel.css`       | Styles du manuel |
