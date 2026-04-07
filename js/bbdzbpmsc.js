@@ -176,6 +176,7 @@ const isStarted = () => started;
 
 const start = async () => {
   audioContext = audioContext || new AudioContext();
+  audioContext.resume();
 
   currentChords = parsePartition(getPartition());
   currentTotalDuration = totalDuration(currentChords);
@@ -183,7 +184,6 @@ const start = async () => {
   song = song || await play(getPartition());
 
   if (!started) {
-    audioContext.resume();
     started = true;
     songStartTime = audioContext.currentTime;
     song.start();
