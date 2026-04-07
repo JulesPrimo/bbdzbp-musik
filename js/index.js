@@ -1,9 +1,6 @@
 document.addEventListener('pointerdown', initAudio, { once: true });
 
 const partitionInput = document.getElementById('partition');
-partitionInput.onchange = function() {
-  setPartition(partitionInput.value);
-};
 
 const partitionSelect = document.getElementById('partition-select');
 
@@ -49,18 +46,70 @@ Object.keys(partitions).forEach(name => {
   partitionSelect.appendChild(option);
 });
 
-const navigate = name => {
+const compress = async text => {
+  const stream = new Blob([text]).stream().pipeThrough(new CompressionStream('gzip'));
+  const bytes = await new Response(stream).arrayBuffer();
+  return btoa(String.fromCharCode(...new Uint8Array(bytes)));
+};
+
+const decompress = async b64 => {
+  const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+  return new Response(stream).text();
+};
+
+const navigate = async name => {
   if (!partitions[name]) name = Object.keys(partitions)[0];
   partitionSelect.value = name;
   history.replaceState(null, '', `#${name}`);
   loadPartition(name);
 };
 
+const navigateCustom = async hash => {
+  const b64 = hash.slice('z:'.length);
+  const notes = await decompress(b64);
+  partitionSelect.value = '';
+  partitionInput.value = notes;
+  setPartition(notes);
+};
+
+let toastTimeout = null;
+const showToast = msg => {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 2000);
+};
+
+const sharePartition = async () => {
+  const current = partitionInput.value;
+  const known = Object.entries(partitions).find(([, p]) => p.notes === current);
+  const hash = known ? known[0] : `z:${await compress(current)}`;
+  const url = `${location.origin}${location.pathname}#${hash}`;
+  if (url.length > 2000) {
+    showToast('partition trop longue');
+    return;
+  }
+  history.replaceState(null, '', `#${hash}`);
+  await navigator.clipboard?.writeText(url);
+  showToast('copié dans le presse-papier');
+};
+
 partitionSelect.onchange = () => navigate(partitionSelect.value);
+partitionInput.onchange = function() {
+  setPartition(partitionInput.value);
+};
 
-window.addEventListener('hashchange', () => navigate(location.hash.slice(1)));
+window.addEventListener('hashchange', () => {
+  const hash = location.hash.slice(1);
+  hash.startsWith('z:') ? navigateCustom(hash) : navigate(hash);
+});
 
-navigate(location.hash.slice(1) || Object.keys(partitions)[0]);
+const initialHash = location.hash.slice(1);
+initialHash.startsWith('z:')
+  ? navigateCustom(initialHash)
+  : navigate(initialHash || Object.keys(partitions)[0]);
 
 const partitionDisplay = document.getElementById('partition-display');
 const beatDot = document.getElementById('beat-dot');
