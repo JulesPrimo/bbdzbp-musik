@@ -49,8 +49,18 @@ Object.keys(partitions).forEach(name => {
   partitionSelect.appendChild(option);
 });
 
-partitionSelect.onchange = () => loadPartition(partitionSelect.value);
-loadPartition(partitionSelect.value);
+const navigate = name => {
+  if (!partitions[name]) name = Object.keys(partitions)[0];
+  partitionSelect.value = name;
+  history.replaceState(null, '', `#${name}`);
+  loadPartition(name);
+};
+
+partitionSelect.onchange = () => navigate(partitionSelect.value);
+
+window.addEventListener('hashchange', () => navigate(location.hash.slice(1)));
+
+navigate(location.hash.slice(1) || Object.keys(partitions)[0]);
 
 const partitionDisplay = document.getElementById('partition-display');
 const beatDot = document.getElementById('beat-dot');
