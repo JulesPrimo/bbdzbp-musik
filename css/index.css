@@ -174,26 +174,68 @@ h1 {
   min-width: 60px;
 }
 
+@media (max-width: 600px) {
+  button[onclick="downloadPartition();"] {
+    display: none;
+  }
+
+  body {
+    padding: 24px 16px;
+    gap: 16px;
+  }
+
+  #partition,
+  #partition-display {
+    height: 180px;
+    font-size: 0.8rem;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  button {
+    padding: 12px 18px;
+    font-size: 0.8rem;
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .tempo {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tempo input[type="range"] {
+    width: 140px;
+  }
+
+  #partition-select {
+    font-size: 0.75rem;
+    max-width: 90px;
+  }
+}
+
 button {
-  background: #1e1c2a;
-  color: #e0dfe8;
-  border: 1px solid #2e2b45;
+  background: none;
+  color: #7c6af7;
+  border: none;
   border-radius: 6px;
-  padding: 10px 22px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
+  padding: 12px 20px;
+  font-size: 2rem;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: color 0.15s, transform 0.1s, text-shadow 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 button:hover {
-  background: #2a2740;
-  border-color: #7c6af7;
-  color: #fff;
+  color: #a99fff;
 }
 
 button:active {
-  background: #7c6af7;
   color: #fff;
+  transform: scale(0.9);
+  text-shadow: 0 0 20px #7c6af7, 0 0 40px #7c6af7;
 }

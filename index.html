@@ -4,6 +4,7 @@
   <script src="./js/partitions.js"></script>
   <script src="./js/bbdzbpmsc.js"></script>
   <link rel="stylesheet" href="./css/index.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
   <div class="header">
@@ -18,11 +19,11 @@
     <span id="tempo-label">120 BPM</span>
   </div>
   <div class="controls">
-    <button onclick="start();">start</button>
-    <button onclick="pause();">pause</button>
-    <button onclick="resume();">resume</button>
-    <button onclick="stop();">stop</button>
-    <button onclick="downloadPartition();">télécharger</button>
+    <button onclick="start();" title="start">&#9654;</button>
+    <button onclick="pause();" title="pause">&#9646;&#9646;</button>
+    <button onclick="resume();" title="resume">&#9654;&#9654;</button>
+    <button onclick="stop();" title="stop">&#9632;</button>
+    <button onclick="downloadPartition();" title="télécharger">&#8595;</button>
   </div>
   <div id="beat-dot"></div>
 </body>
