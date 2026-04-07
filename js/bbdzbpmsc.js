@@ -1,38 +1,29 @@
+const NOTE_TABLE = {
+  "C": 261.63, "C#": 277.18, "D": 293.66, "D#": 311.13,
+  "E": 329.63, "F": 349.23, "F#": 369.99, "G": 392.00,
+  "G#": 415.30, "A": 440.00, "A#": 466.16, "B": 493.88,
+  "-": 0,
+};
+
+const NOTE_SCALE = ["C", "D", "E", "F", "G", "A", "B"];
+
 const getNote = (note) => {
-  const notes = [
-    { name: "C", frequency: 261.63 },
-    { name: "C#", frequency: 277.18 },
-    { name: "D", frequency: 293.66 },
-    { name: "D#", frequency: 311.13 },
-    { name: "E", frequency: 329.63 },
-    { name: "F", frequency: 349.23 },
-    { name: "F#", frequency: 369.99 },
-    { name: "G", frequency: 392.00 },
-    { name: "G#", frequency: 415.30 },
-    { name: "A", frequency: 440.00 },
-    { name: "A#", frequency: 466.16 },
-    { name: "B", frequency: 493.88 },
-    { name: "-", frequency: 0 },
-  ];
-
-  const scale = ["C", "D", "E", "F", "G", "A", "B"]
-
   note = note.toUpperCase();
 
   const [noteName, signature] = note.split('');
 
   if (signature === "B") {
-    if (noteName === "C") { return { name: "B", frequency:  493.88 / 2 }; }
+    if (noteName === "C") { return { name: "B", frequency: NOTE_TABLE["B"] / 2 }; }
 
-    note = [scale[scale.lastIndexOf(noteName) - 1], noteName === "F" ? "" : "#"].join("");
+    note = [NOTE_SCALE[NOTE_SCALE.lastIndexOf(noteName) - 1], noteName === "F" ? "" : "#"].join("");
   }
 
   if (signature === "#") {
-    if (noteName === "B") { return { name: "C", frequency:  261.63 * 2 }; }
+    if (noteName === "B") { return { name: "C", frequency: NOTE_TABLE["C"] * 2 }; }
     if (noteName === "E") { note = "F"; }
   }
 
-  return notes.find(({ name }) => name === note)
+  return { name: note, frequency: NOTE_TABLE[note] };
 }
 
 let tempo = 120;
@@ -164,41 +155,24 @@ let songStartTime = null;
 let currentChords = null;
 let currentTotalDuration = 0;
 
-const getCurrentChord = () => {
+const getCurrentChordInfo = () => {
   if (!started || !audioContext || songStartTime === null || !currentChords) return null;
   const elapsed = (audioContext.currentTime - songStartTime) % currentTotalDuration;
   let t = 0;
-  for (const chord of currentChords) {
-    t += chord.duration;
-    if (elapsed < t) return chord;
+  for (let i = 0; i < currentChords.length; i++) {
+    const chord = currentChords[i];
+    const end = t + chord.duration;
+    if (elapsed < end) return { chord, index: i, phase: (elapsed - t) / chord.duration };
+    t = end;
   }
   return null;
 };
 
-const getCurrentChordIndex = () => {
-  if (!started || !audioContext || songStartTime === null || !currentChords) return -1;
-  const elapsed = (audioContext.currentTime - songStartTime) % currentTotalDuration;
-  let t = 0;
-  for (let i = 0; i < currentChords.length; i++) {
-    t += currentChords[i].duration;
-    if (elapsed < t) return i;
-  }
-  return -1;
-};
+const getCurrentChord = () => getCurrentChordInfo()?.chord ?? null;
+const getCurrentChordIndex = () => getCurrentChordInfo()?.index ?? -1;
+const getChordPhase = () => getCurrentChordInfo()?.phase ?? 0;
 
 const isStarted = () => started;
-
-const getChordPhase = () => {
-  if (!started || !audioContext || songStartTime === null || !currentChords) return 0;
-  const elapsed = (audioContext.currentTime - songStartTime) % currentTotalDuration;
-  let t = 0;
-  for (const chord of currentChords) {
-    const end = t + chord.duration;
-    if (elapsed < end) return (elapsed - t) / chord.duration;
-    t = end;
-  }
-  return 0;
-};
 
 const start = async () => {
   audioContext = audioContext || new AudioContext();

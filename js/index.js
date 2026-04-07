@@ -77,7 +77,7 @@ const tick = () => {
   }
 
   if (playing) {
-    const idx = getCurrentChordIndex();
+    const { chord, index: idx, phase } = getCurrentChordInfo() ?? { chord: null, index: -1, phase: 0 };
     if (idx !== lastChordIndex) {
       lastChordIndex = idx;
       rebuildDisplay(idx);
@@ -89,9 +89,7 @@ const tick = () => {
       beatDot.style.top  = `${Math.random() * (window.innerHeight - 14)}px`;
     }
 
-    const chord = getCurrentChord();
     const isRest = chord?.name.replace(/[*/].*$/, '') === '-';
-    const phase = getChordPhase();
     const pulse = isRest ? 0 : Math.pow(1 - phase, 2);
     beatDot.style.transform = `scale(${pulse * 3})`;
     beatDot.style.opacity = pulse;
