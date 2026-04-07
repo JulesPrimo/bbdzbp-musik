@@ -174,18 +174,13 @@ const getChordPhase = () => getCurrentChordInfo()?.phase ?? 0;
 
 const isStarted = () => started;
 
-const unlockAudio = () => {
-  const buffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
-  const source = audioContext.createBufferSource();
-  source.buffer = buffer;
-  source.connect(audioContext.destination);
-  source.start(0);
+const initAudio = () => {
+  if (!audioContext) audioContext = new AudioContext();
+  if (audioContext.state !== 'running') audioContext.resume();
 };
 
 const start = async () => {
-  audioContext = audioContext || new AudioContext();
-  audioContext.resume();
-  unlockAudio();
+  initAudio();
 
   currentChords = parsePartition(getPartition());
   currentTotalDuration = totalDuration(currentChords);

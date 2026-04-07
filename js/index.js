@@ -1,3 +1,5 @@
+document.addEventListener('pointerdown', initAudio, { once: true });
+
 const partitionInput = document.getElementById('partition');
 partitionInput.onchange = function() {
   setPartition(partitionInput.value);
