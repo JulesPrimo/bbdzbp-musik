@@ -6,8 +6,9 @@ const partitionSelect = document.getElementById('partition-select');
 
 const loadPartition = name => {
   const { notes, tempo } = partitions[name];
-  partitionInput.value = notes;
-  setPartition(notes);
+  const clean = sanitize(notes);
+  partitionInput.value = clean;
+  setPartition(clean);
   tempoInput.value = tempo;
   applyTempo();
   if (isStarted()) start();
@@ -67,7 +68,7 @@ const navigate = async name => {
 
 const navigateCustom = async hash => {
   const [, bpm, b64] = hash.split(':');
-  const notes = await decompress(b64);
+  const notes = sanitize(await decompress(b64));
   partitionSelect.value = '';
   partitionInput.value = notes;
   setPartition(notes);
@@ -100,8 +101,10 @@ const sharePartition = async () => {
 };
 
 partitionSelect.onchange = () => navigate(partitionSelect.value);
+const sanitize = text => text.trim().replace(/^,+|,+$/g, '');
+
 partitionInput.onchange = function() {
-  setPartition(partitionInput.value);
+  setPartition(sanitize(partitionInput.value));
 };
 
 window.addEventListener('hashchange', () => {
