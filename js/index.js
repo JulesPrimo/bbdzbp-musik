@@ -66,11 +66,13 @@ const navigate = async name => {
 };
 
 const navigateCustom = async hash => {
-  const b64 = hash.slice('z:'.length);
+  const [, bpm, b64] = hash.split(':');
   const notes = await decompress(b64);
   partitionSelect.value = '';
   partitionInput.value = notes;
   setPartition(notes);
+  tempoInput.value = bpm;
+  applyTempo();
 };
 
 let toastTimeout = null;
@@ -85,8 +87,9 @@ const showToast = msg => {
 const sharePartition = async () => {
   const current = partitionInput.value;
   const known = Object.entries(partitions).find(([, p]) => p.notes === current);
-  const hash = known ? known[0] : `z:${await compress(current)}`;
-  const url = `${location.origin}${location.pathname}#${hash}`;
+  const bpm = parseInt(tempoInput.value);
+  const hash = known ? known[0] : `z:${bpm}:${await compress(current)}`;
+  const url = `${location.href.split('#')[0]}#${hash}`;
   if (url.length > 2000) {
     showToast('partition trop longue');
     return;
